@@ -1,15 +1,16 @@
 import logging
 import os
 from time import sleep
-from FX29Sensor import FX29Sensor
+from lib.FX29Sensor import FX29Sensor
 
-# log_dir = "logs"
-# os.makedirs(log_dir, exist_ok=True)
-# logging.basicConfig(
-#     filename=os.path.join(log_dir, "sensor_address_change.log"),
-#     level=logging.INFO,
-#     format="%(asctime)s - %(levelname)s - %(message)s"
-# )
+# LOGGING
+log_dir = "logs"
+os.makedirs(log_dir, exist_ok=True)
+logging.basicConfig(
+    filename=os.path.join(log_dir, "sensor_address_change.log"),
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 def change_sensor_address():
     logging.info("address_changer started.")
@@ -58,3 +59,5 @@ def change_sensor_address():
         print("Error when changing the address: " + str(e))
 
     logging.info("address_changer completed.")
+
+change_sensor_address()

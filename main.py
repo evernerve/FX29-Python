@@ -1,6 +1,6 @@
 import logging
-from lib.change_address import change_sensor_address
-from lib.read_force import read_sensor_force
+from change_address import change_sensor_address
+from read_force import read_sensor_force
 
 
 # Configure logging

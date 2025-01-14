@@ -32,7 +32,7 @@ class FX29Sensor:
         self.sensitivity = 1
         self.power_pin = 4 # GPIO 4 (PIN 7)
 
-        # Set up GPIO
+        # # Set up GPIO
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.power_pin, GPIO.OUT)
 
@@ -46,11 +46,17 @@ class FX29Sensor:
         
         """
 
-        self.bus.write_byte(self.device_address, self.register_addr)
-        time.sleep(0.01)  
-        data = self.bus.read_i2c_block_data(self.device_address, 0x06, 2)
-        raw_value = (data[0] << 8) + data[1]
-        return raw_value
+        self.bus.read_byte(self.device_address)
+        data = self.bus.read_i2c_block_data(self.device_address, self.register_addr, 2)  # Read 2 bytes from the device
+        # print(data)
+        high_byte = data[0]  # First byte (high byte)
+        low_byte = data[1]   # Second byte (low byte)
+        # print(f"High byte: {bin(high_byte)}, Low byte: {bin(low_byte)}")
+        
+        # Combine the two bytes into a 16-bit result
+        raw_force = (high_byte << 8) | low_byte
+        # print(raw_force)
+        return raw_force
 
 
     def calibrate(self):
@@ -97,6 +103,7 @@ class FX29Sensor:
         if raw_value is not None:
 
             force = (raw_value - self.zero_offset) * self.sensitivity
+            
 
             return force
 
@@ -176,7 +183,6 @@ class FX29Sensor:
             self.power_up_sensor()
             print("Sensor restarted.")
 
-            
             print(f"I2C address changed successfully from {hex(old_address)} to {hex(new_address)}.")
 
 
